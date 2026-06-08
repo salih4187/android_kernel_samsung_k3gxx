@@ -1259,7 +1259,7 @@ static int s3c24xx_i2c_resume(struct device *dev)
 	struct s3c24xx_i2c *i2c = platform_get_drvdata(pdev);
 
 	i2c->suspended = 0;
-	i2c->need_hw_init = S3C2410_NEED_REG_INIT;
+	i2c->need_hw_init = 1;
 
 	return 0;
 }
@@ -1272,7 +1272,7 @@ static int s3c24xx_i2c_runtime_resume(struct device *dev)
 	struct s3c24xx_i2c *i2c = platform_get_drvdata(pdev);
 
 	if (i2c->quirks & QUIRK_FIMC_I2C)
-		i2c->need_hw_init = S3C2410_NEED_REG_INIT;
+		i2c->need_hw_init = 1;
 
 	return 0;
 }
