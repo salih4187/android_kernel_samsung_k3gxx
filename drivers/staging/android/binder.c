@@ -1467,9 +1467,10 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
 		case BINDER_TYPE_HANDLE:
 		case BINDER_TYPE_WEAK_HANDLE: {
 			struct flat_binder_object *fp;
-			fp = to_flat_binder_object(hdr);
+			struct binder_ref *ref;
 
-			struct binder_ref *ref = binder_get_ref(proc, fp->handle,
+			fp = to_flat_binder_object(hdr);
+			ref = binder_get_ref(proc, fp->handle,
 						hdr->type == BINDER_TYPE_HANDLE);
 			if (ref == NULL) {
 				pr_err("transaction release %d bad handle %d\n",
@@ -1538,7 +1539,7 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
 		} break;
 		default:
 			pr_err("transaction release %d bad object type %x\n",
-				debug_id, fp->type);
+				debug_id, hdr->type);
 			break;
 		}
 	}
@@ -2043,8 +2044,8 @@ static void binder_transaction(struct binder_proc *proc,
 		if (object_size == 0 || *offp < off_min) {
 			binder_user_error("%d:%d got transaction with invalid offset (%lld, min %lld max %lld) or object.\n",
 			  proc->pid, thread->pid, (u64)*offp,
-			  off_min,
-			  t->buffer->data_size);
+			  (u64)off_min,
+			  (u64)t->buffer->data_size);
 			return_error = BR_FAILED_REPLY;
 			goto err_bad_offset;
 		}
