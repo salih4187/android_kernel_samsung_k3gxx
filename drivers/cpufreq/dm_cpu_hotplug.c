@@ -607,7 +607,7 @@ static int dynamic_hotplug(enum hotplug_cmd cmd)
 		break;
 	case CMD_LITTLE_ONE_OUT:
 	case CMD_BIG_OUT:
-	case CMD_SLEEP_PREPARE:	
+	case CMD_SLEEP_PREPARE:
 		ret = __cpu_hotplug(true, cmd);
 		break;
 	case CMD_LITTLE_ONE_IN:
